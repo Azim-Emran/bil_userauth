@@ -4,6 +4,7 @@ export default class SignUp extends Component {
     constructor(props){
         super(props)
         this.state={
+            username:'',
             fname:'',
             lname:'',
             email:'',
@@ -13,8 +14,8 @@ export default class SignUp extends Component {
     }
     handleSubmit(e){
         e.preventDefault();
-        const{ fname, lname, email, password } = this.state;
-        console.log(fname, lname, email, password);
+        const{ username, fname, lname, email, password } = this.state;
+        console.log(username, fname, lname, email, password);
         fetch("http://localhost:5000/register",{
             method:"POST",
             crossDomain:true,
@@ -24,6 +25,7 @@ export default class SignUp extends Component {
                 'Access-Control-Allow-Origin': '*',
             },
             body:JSON.stringify({
+                username,
                 fname,
                 lname,
                 email,
@@ -39,6 +41,15 @@ export default class SignUp extends Component {
             <form onSubmit={this.handleSubmit}>
                 <h1>Sign Up</h1>
 
+                <div className='mb-3'>
+                    <label>Username</label>
+                    <input
+                        type="text"
+                        className='form-control'
+                        placeholder='Username'
+                        onChange={e=>this.setState({ username: e.target.value })}
+                    />
+                </div>
                 <div className='mb-3'>
                     <label>First Name</label>
                     <input

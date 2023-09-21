@@ -4,15 +4,15 @@ export default class LogIn extends Component {
     constructor(props){
         super(props);
         this.state={
-            email:'',
+            username:'',
             password:'',
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit(e){
         e.preventDefault();
-        const { email, password } = this.state;
-        console.log(email, password);
+        const { username, password } = this.state;
+        console.log(username, password);
         fetch("http://localhost:5000/login-user",{
             method:"POST",
             crossDomain:true,
@@ -22,7 +22,7 @@ export default class LogIn extends Component {
                 'Access-Control-Allow-Origin': '*',
             },
             body:JSON.stringify({
-                email,
+                username,
                 password
             }),
         })
@@ -37,11 +37,11 @@ export default class LogIn extends Component {
                 <h3>Sign In</h3>
 
                 <div className='mb-3'>
-                    <label>Email Address</label>
+                    <label>Username</label>
                     <input
-                    type='email'
+                    type='text'
                     className='form-control'
-                    placeholder='Enter email'
+                    placeholder='Enter username'
                     />
                 </div>
 

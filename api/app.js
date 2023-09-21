@@ -11,8 +11,9 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = "jklaHSA&(hjhlh!*(&(*!&@jPOSjopoopajhsa8h9ASH))AH09h09hA90h"
 
 const mongoURL = "mongodb+srv://hammstadann:06cWST6ppwjRbj7P@cluster0.btqu8y0.mongodb.net/?retryWrites=true&w=majority";
+const myMongoURL = "mongodb+srv://Azem:Decker_4144@cluster0.s4xra9d.mongodb.net/";
 
-mongoose.connect(mongoURL, {
+mongoose.connect(myMongoURL, {
     useNewUrlParser: true,
   })
   .then(() => {
@@ -24,16 +25,23 @@ mongoose.connect(mongoURL, {
 
   const User = mongoose.model("UserInfo");
   app.post('/register', async(req, res) => {
-    const {fname, lname, email, password} = req.body;
+    const {username, fname, lname, email, password} = req.body;
 
     const encryptedPassword = await bcrypt.hash(password, 10);
     try {
-        const oldUser = await User.findOne({email});
+        const oldUserByEmail = await User.findOne({email});
 
-        if(oldUser){
-            return res.send({ error: "User Exists" });
+        if(oldUserByEmail){
+            return res.send({ error: "Email Exists" });
         }
+
+        const oldUserByUsername = await User.findOne({username});
+        if(oldUserByUsername){
+            return res.send({ error: "Username Exists" });
+        }
+
         await User.create({
+            username,
             fname,
             lname,
             email,
@@ -46,9 +54,9 @@ mongoose.connect(mongoURL, {
 });
 
 app.post('/login-user', async(req, res) =>{
-    const { email, password } = req.body;
+    const { username, password } = req.body;
     
-    const user = await User.findOne({email});
+    const user = await User.findOne({username});
     if (!user) {
         return res.json({ error: 'User not found.' });
     }
